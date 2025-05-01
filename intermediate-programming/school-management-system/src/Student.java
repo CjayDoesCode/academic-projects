@@ -1,28 +1,16 @@
 public class Student {
-    // Fields
-    private String id;
-    private String firstName;
-    private String middleName;
-    private String lastName;
-    private String sex;
-    private Boolean pwd;
-    private String institute;
-    private String program;
-    private int year;
-    private String section;
+    private String id = "";
+    private String firstName = "";
+    private String middleName = "";
+    private String lastName = "";
+    private String sex = "";
+    private Boolean pwd = false;
+    private String institute = "";
+    private String program = "";
+    private int year = 0;
+    private String section = "";
 
-    // Constructors
     public Student() {
-        id = "";
-        firstName = "";
-        middleName = "";
-        lastName = "";
-        sex = "";
-        pwd = false;
-        institute = "";
-        program = "";
-        year = 0;
-        section = "";
     }
 
     public Student(String id, String firstName, String middleName, String lastName,
@@ -123,11 +111,7 @@ public class Student {
 
     // Methods
     public String getFullName() {
-        String fullName = (!lastName.isEmpty() ? lastName : "")
-                + (!firstName.isEmpty() ? ", " + firstName : "")
-                + (!middleName.isEmpty() ? " " + middleName : "");
-
-        return fullName;
+        return getFullName(Integer.MAX_VALUE);
     }
 
     public String getFullName(int max) {
