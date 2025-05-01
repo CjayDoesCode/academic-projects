@@ -60,7 +60,23 @@ public class StudentManager {
     }
 
     public void removeStudent(Scanner scanner) {
+        if (studentList.isEmpty()) {
+            System.out.printf("\n[ Info ] Student list is empty.\n\n");
+            return;
+        }
 
+        System.out.print("\nEnter ID: ");
+        String id = scanner.nextLine();
+
+        for (Student student : studentList) {
+            if (student.getId().equals(id)) {
+                studentList.remove(student);
+                System.out.print("\n[ Info ] Student removed successfully.\n\n");
+                return;
+            }
+        }
+
+        System.out.print("\n[ Info ] Student not found.\n\n");
     }
 
     public void updateStudent(Scanner scanner) {
@@ -103,7 +119,7 @@ public class StudentManager {
         boolean fileExists = file.exists();
 
         if (fileExists) {
-            try(BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
                 String studentEntry;
                 boolean isFirstLine = true;
                 while ((studentEntry = reader.readLine()) != null) {
@@ -125,8 +141,7 @@ public class StudentManager {
                             studentData[6],
                             studentData[7],
                             year,
-                            studentData[9]
-                        );
+                            studentData[9]);
 
                     this.addStudent(student);
                 }
@@ -145,7 +160,7 @@ public class StudentManager {
             return;
         }
 
-        try(FileWriter writer = new FileWriter(file, fileExists)) {
+        try (FileWriter writer = new FileWriter(file, fileExists)) {
             if (!fileExists)
                 writer.write("id,first_name,middle_name,last_name,sex,pwd,institute,program,year,section");
 
