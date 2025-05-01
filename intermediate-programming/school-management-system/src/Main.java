@@ -14,8 +14,9 @@ public class Main {
                     [ 1 ] Add a student
                     [ 2 ] Remove a student by ID
                     [ 3 ] Update a student by ID
-                    [ 4 ] List all students
-                    [ 5 ] Save and exit
+                    [ 4 ] Search a student by ID
+                    [ 5 ] List all students
+                    [ 6 ] Save and exit
                     ================================================================================
                     Enter your choice:\s""");
 
@@ -39,9 +40,12 @@ public class Main {
                     studentManager.updateStudent(scanner);
                     break;
                 case 4:
-                    studentManager.listStudents();
+                    studentManager.searchStudent(scanner);
                     break;
                 case 5:
+                    studentManager.listStudents();
+                    break;
+                case 6:
                     studentManager.save();
                     System.exit(0);
                 default:

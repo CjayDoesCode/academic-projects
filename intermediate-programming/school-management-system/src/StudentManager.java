@@ -83,6 +83,37 @@ public class StudentManager {
 
     }
 
+    public void searchStudent(Scanner scanner) {
+        if (studentList.isEmpty()) {
+            System.out.printf("\n[ Info ] Student list is empty.\n\n");
+            return;
+        }
+
+        System.out.print("\nEnter ID: ");
+        String id = scanner.nextLine();
+
+        for (Student student : studentList) {
+            if (student.getId().equals(id)) {
+                System.out
+                        .print("\nID       Name                  Sex     PWD    Institute  Program   Year  Section\n");
+
+                System.out.printf("%-7s  %-20s  %-6s  %-5s  %-9s  %-8s  %-4d  %-7s\n\n",
+                        student.getId(),
+                        student.getFullName(20),
+                        student.getSex(),
+                        student.getPwd(),
+                        student.getInstitute(),
+                        student.getProgram(),
+                        student.getYear(),
+                        student.getSection());
+
+                return;
+            }
+        }
+
+        System.out.print("\n[ Info ] Student not found.\n\n");
+    }
+
     public void listStudents() {
         if (studentList.isEmpty()) {
             System.out.printf("\n[ Info ] Student list is empty.\n\n");
