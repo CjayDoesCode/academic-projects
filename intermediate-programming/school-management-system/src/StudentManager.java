@@ -1,9 +1,15 @@
 import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class StudentManager {
     // fields
     private ArrayList<Student> studentList;
+    static String fileName = "students.csv";
 
     // constructor
     public StudentManager() {
@@ -12,6 +18,10 @@ public class StudentManager {
     }
 
     // methods
+    private void addStudent(Student student) {
+        this.studentList.add(student);
+    }
+
     public void addStudent(Scanner scanner) {
         System.out.print("\nEnter ID: ");
         String id = scanner.nextLine();
@@ -44,7 +54,7 @@ public class StudentManager {
         String section = scanner.nextLine();
 
         Student student = new Student(id, firstName, middleName, lastName, sex, pwd, institute, program, year, section);
-        studentList.add(student);
+        this.addStudent(student);
 
         System.out.print("\n[ Info ] Student added successfully.\n\n");
     }
@@ -88,7 +98,102 @@ public class StudentManager {
         System.out.printf("================================================================================\n\n");
     }
 
-    public void save() {
+    public void loadFromFile() {
+        File file = new File(fileName);
+        boolean fileExists = file.exists();
 
+        if (fileExists) {
+            try(BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                String studentEntry;
+                boolean isFirstLine = true;
+                while ((studentEntry = reader.readLine()) != null) {
+                    if (isFirstLine) {
+                        isFirstLine = false;
+                        continue; // Skip the header line
+                    }
+                    String[] studentData = parseCsvLine(studentEntry);
+                    boolean pwd = studentData[5].equals("true");
+                    int year = Integer.parseInt(studentData[8]);
+
+                    Student student = new Student(
+                            studentData[0],
+                            studentData[1],
+                            studentData[2],
+                            studentData[3],
+                            studentData[4],
+                            pwd,
+                            studentData[6],
+                            studentData[7],
+                            year,
+                            studentData[9]
+                        );
+
+                    this.addStudent(student);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void save() {
+        File file = new File(fileName);
+        boolean fileExists = file.exists();
+
+        if (this.studentList.isEmpty()) {
+            System.out.println("\n[ Info ] Student list is empty so nothing will be saved.\n");
+            return;
+        }
+
+        try(FileWriter writer = new FileWriter(file, fileExists)) {
+            if (!fileExists)
+                writer.write("id,first_name,middle_name,last_name,sex,pwd,institute,program,year,section");
+
+            this.studentList.forEach(student -> {
+                try {
+                    writer.write(String.format("\n%s,\"%s\",\"%s\",\"%s\",%s,%s,\"%s\",\"%s\",%d,\"%s\"",
+                            student.getId(),
+                            student.getFirstName(),
+                            student.getMiddleName(),
+                            student.getLastName(),
+                            student.getSex(),
+                            student.getPwd(),
+                            student.getInstitute(),
+                            student.getProgram(),
+                            student.getYear(),
+                            student.getSection()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+
+            System.out.println("\n[ Info ] Student list saved successfully.\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static String[] parseCsvLine(String line) {
+        ArrayList<String> fields = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        boolean inQuotes = false;
+        for (int i = 0; i < line.length(); i++) {
+            char c = line.charAt(i);
+            if (c == '"') {
+                if (inQuotes && i + 1 < line.length() && line.charAt(i + 1) == '"') {
+                    sb.append('"');
+                    i++;
+                } else {
+                    inQuotes = !inQuotes;
+                }
+            } else if (c == ',' && !inQuotes) {
+                fields.add(sb.toString());
+                sb.setLength(0);
+            } else {
+                sb.append(c);
+            }
+        }
+        fields.add(sb.toString());
+        return fields.toArray(new String[0]);
     }
 }
