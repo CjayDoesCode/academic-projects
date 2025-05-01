@@ -23,7 +23,7 @@ public class Main {
             } catch (Exception e) {
                 System.out.printf("\n[ Error ] Input is an invalid integer.\n\n");
                 scanner.nextLine();
-                return;
+                continue;
             }
 
             switch (choice) {
