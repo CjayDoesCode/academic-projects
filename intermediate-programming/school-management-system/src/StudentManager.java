@@ -232,7 +232,6 @@ public class StudentManager {
 
     public void save() {
         File file = new File(fileName);
-        boolean fileExists = file.exists();
 
         if (this.studentList.isEmpty()) {
             if (file.exists()) {
@@ -247,9 +246,8 @@ public class StudentManager {
             return;
         }
 
-        try (FileWriter writer = new FileWriter(file, fileExists)) {
-            if (!fileExists)
-                writer.write("id,first_name,middle_name,last_name,sex,pwd,institute,program,year,section");
+        try (FileWriter writer = new FileWriter(file, false)) {
+            writer.write("id,first_name,middle_name,last_name,sex,pwd,institute,program,year,section");
 
             this.studentList.forEach(student -> {
                 try {
