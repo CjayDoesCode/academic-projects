@@ -80,7 +80,55 @@ public class StudentManager {
     }
 
     public void updateStudent(Scanner scanner) {
+        if (studentList.isEmpty()) {
+            System.out.printf("\n[ Info ] Student list is empty.\n\n");
+            return;
+        }
 
+        System.out.print("\nEnter ID: ");
+        String id = scanner.nextLine();
+
+        for (Student student : studentList) {
+            if (student.getId().equals(id)) {
+                System.out.print("\n[ Info ] Student found. Enter new details.\n\n");
+
+                System.out.print("Enter ID: ");
+                student.setId(scanner.nextLine());
+
+                System.out.print("Enter First Name: ");
+                student.setFirstName(scanner.nextLine());
+
+                System.out.print("Enter Middle Name: ");
+                student.setMiddleName(scanner.nextLine());
+
+                System.out.print("Enter Last Name: ");
+                student.setLastName(scanner.nextLine());
+
+                System.out.print("Enter Sex (Male/Female): ");
+                student.setSex(scanner.nextLine());
+
+                System.out.print("Enter PWD (True/False): ");
+                student.setPwd(Boolean.parseBoolean(scanner.nextLine()));
+
+                System.out.print("Enter Institute: ");
+                student.setInstitute(scanner.nextLine());
+
+                System.out.print("Enter Program: ");
+                student.setProgram(scanner.nextLine());
+
+                System.out.print("Enter Year: ");
+                student.setYear(Integer.parseInt(scanner.nextLine()));
+
+                System.out.print("Enter Section: ");
+                student.setSection(scanner.nextLine());
+
+                System.out.print("\n[ Info ] Student details updated successfully.\n\n");
+
+                return;
+            }
+        }
+
+        System.out.print("\n[ Info ] Student not found.\n\n");
     }
 
     public void searchStudent(Scanner scanner) {
