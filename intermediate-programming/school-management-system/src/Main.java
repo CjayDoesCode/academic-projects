@@ -20,6 +20,7 @@ public class Main {
 
             try {
                 choice = scanner.nextInt();
+                scanner.nextLine();
             } catch (Exception e) {
                 System.out.printf("\n[ Error ] Input is an invalid integer.\n\n");
                 scanner.nextLine();
