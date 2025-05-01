@@ -13,6 +13,40 @@ public class StudentManager {
 
     // methods
     public void addStudent(Scanner scanner) {
+        System.out.print("\nEnter ID: ");
+        String id = scanner.nextLine();
+
+        System.out.print("Enter First Name: ");
+        String firstName = scanner.nextLine();
+
+        System.out.print("Enter Middle Name: ");
+        String middleName = scanner.nextLine();
+
+        System.out.print("Enter Last Name: ");
+        String lastName = scanner.nextLine();
+
+        System.out.print("Enter Sex (Male/Female): ");
+        String sex = scanner.nextLine();
+
+        System.out.print("Enter PWD (True/False): ");
+        Boolean pwd = Boolean.parseBoolean(scanner.nextLine());
+
+        System.out.print("Enter Institute: ");
+        String institute = scanner.nextLine();
+
+        System.out.print("Enter Program: ");
+        String program = scanner.nextLine();
+
+        System.out.print("Enter Year: ");
+        int year = Integer.parseInt(scanner.nextLine());
+
+        System.out.print("Enter Section: ");
+        String section = scanner.nextLine();
+
+        Student student = new Student(id, firstName, middleName, lastName, sex, pwd, institute, program, year, section);
+        studentList.add(student);
+
+        System.out.print("\n[ Info ] Student added successfully.\n\n");
     }
 
     public void removeStudent(Scanner scanner) {
