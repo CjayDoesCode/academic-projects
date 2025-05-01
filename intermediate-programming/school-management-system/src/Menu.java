@@ -106,43 +106,43 @@ public class Menu {
         String id = scanner.nextLine();
 
         for (Student student : StudentManager.getStudentList()) {
-            if (student.getId().equals(id)) {
-                System.out.print("\n[ Info ] Enter new student details.\n\n");
+            if (!student.getId().equals(id))
+                continue;
 
-                System.out.print("ID: ");
-                student.setId(scanner.nextLine());
+            System.out.print("\n[ Info ] Enter new student details.\n\n");
 
-                System.out.print("First Name: ");
-                student.setFirstName(scanner.nextLine());
+            System.out.print("ID: ");
+            student.setId(scanner.nextLine());
 
-                System.out.print("Middle Name: ");
-                student.setMiddleName(scanner.nextLine());
+            System.out.print("First Name: ");
+            student.setFirstName(scanner.nextLine());
 
-                System.out.print("Last Name: ");
-                student.setLastName(scanner.nextLine());
+            System.out.print("Middle Name: ");
+            student.setMiddleName(scanner.nextLine());
 
-                System.out.print("Sex (Male/Female): ");
-                student.setSex(scanner.nextLine());
+            System.out.print("Last Name: ");
+            student.setLastName(scanner.nextLine());
 
-                System.out.print("PWD (True/False): ");
-                student.setPwd(Boolean.parseBoolean(scanner.nextLine()));
+            System.out.print("Sex (Male/Female): ");
+            student.setSex(scanner.nextLine());
 
-                System.out.print("Institute: ");
-                student.setInstitute(scanner.nextLine());
+            System.out.print("PWD (True/False): ");
+            student.setPwd(Boolean.parseBoolean(scanner.nextLine()));
 
-                System.out.print("Program: ");
-                student.setProgram(scanner.nextLine());
+            System.out.print("Institute: ");
+            student.setInstitute(scanner.nextLine());
 
-                System.out.print("Year: ");
-                student.setYear(Integer.parseInt(scanner.nextLine()));
+            System.out.print("Program: ");
+            student.setProgram(scanner.nextLine());
 
-                System.out.print("Section: ");
-                student.setSection(scanner.nextLine());
+            System.out.print("Year: ");
+            student.setYear(Integer.parseInt(scanner.nextLine()));
 
-                System.out.print("\n[ Info ] Student details updated successfully.\n\n");
+            System.out.print("Section: ");
+            student.setSection(scanner.nextLine());
 
-                return;
-            }
+            System.out.print("\n[ Info ] Student details updated successfully.\n\n");
+            return;
         }
 
         System.out.print("\n[ Info ] Student could not be found.\n\n");
@@ -156,9 +156,11 @@ public class Menu {
             if (student.getId().equals(id)) {
                 System.out.printf("\n%-7s  %-20s  %-6s  %-5s  %-9s  %-8s  %-4d  %-7s\n",
                         "ID", "Name", "Sex", "PWD", "Institute", "Program", "Year", "Section");
+
                 System.out.printf("%-7s  %-20s  %-6s  %-5s  %-9s  %-8s  %-4d  %-7s\n\n",
                         student.getId(), student.getFullName(20), student.getSex(), student.getPwd(),
                         student.getInstitute(), student.getProgram(), student.getYear(), student.getSection());
+
                 return;
             }
         }
@@ -185,14 +187,8 @@ public class Menu {
 
         for (Student student : studentList) {
             System.out.printf("%-7s  %-20s  %-6s  %-5s  %-9s  %-8s  %-4d  %-7s\n",
-                    student.getId(),
-                    student.getFullName(20),
-                    student.getSex(),
-                    student.getPwd(),
-                    student.getInstitute(),
-                    student.getProgram(),
-                    student.getYear(),
-                    student.getSection());
+                    student.getId(), student.getFullName(20), student.getSex(), student.getPwd(),
+                    student.getInstitute(), student.getProgram(), student.getYear(), student.getSection());
         }
 
         System.out.print("=".repeat(80) + "\n\n");
