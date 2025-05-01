@@ -156,7 +156,15 @@ public class StudentManager {
         boolean fileExists = file.exists();
 
         if (this.studentList.isEmpty()) {
-            System.out.println("\n[ Info ] Student list is empty so nothing will be saved.\n");
+            if (file.exists()) {
+                if (file.delete()) {
+                    System.out.println("\n[ Info ] Student list is empty. Existing file deleted.\n");
+                } else {
+                    System.out.println("\n[ Warning ] Student list is empty, but failed to delete existing file.\n");
+                }
+            } else {
+                System.out.println("\n[ Info ] Student list is empty. No file to delete.\n");
+            }
             return;
         }
 
