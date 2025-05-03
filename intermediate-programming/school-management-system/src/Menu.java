@@ -50,39 +50,11 @@ public class Menu {
 
     public static void addStudent(Scanner scanner) {
         Student student = new Student();
+
         System.out.print("\n[ Info ] Enter student details.\n\n");
-
-        System.out.print("ID: ");
-        student.setId(scanner.nextLine());
-
-        System.out.print("First Name: ");
-        student.setFirstName(scanner.nextLine());
-
-        System.out.print("Middle Name: ");
-        student.setMiddleName(scanner.nextLine());
-
-        System.out.print("Last Name: ");
-        student.setLastName(scanner.nextLine());
-
-        System.out.print("Sex (Male/Female): ");
-        student.setSex(scanner.nextLine());
-
-        System.out.print("PWD (True/False): ");
-        student.setPwd(Boolean.parseBoolean(scanner.nextLine()));
-
-        System.out.print("Institute: ");
-        student.setInstitute(scanner.nextLine());
-
-        System.out.print("Program: ");
-        student.setProgram(scanner.nextLine());
-
-        System.out.print("Year: ");
-        student.setYear(Integer.parseInt(scanner.nextLine()));
-
-        System.out.print("Section: ");
-        student.setSection(scanner.nextLine());
-
+        Utility.setStudentFields(scanner, student);
         StudentManager.addStudent(student);
+
         System.out.print("\n[ Info ] Student added successfully.\n\n");
     }
 
@@ -110,36 +82,7 @@ public class Menu {
                 continue;
 
             System.out.print("\n[ Info ] Enter new student details.\n\n");
-
-            System.out.print("ID: ");
-            student.setId(scanner.nextLine());
-
-            System.out.print("First Name: ");
-            student.setFirstName(scanner.nextLine());
-
-            System.out.print("Middle Name: ");
-            student.setMiddleName(scanner.nextLine());
-
-            System.out.print("Last Name: ");
-            student.setLastName(scanner.nextLine());
-
-            System.out.print("Sex (Male/Female): ");
-            student.setSex(scanner.nextLine());
-
-            System.out.print("PWD (True/False): ");
-            student.setPwd(Boolean.parseBoolean(scanner.nextLine()));
-
-            System.out.print("Institute: ");
-            student.setInstitute(scanner.nextLine());
-
-            System.out.print("Program: ");
-            student.setProgram(scanner.nextLine());
-
-            System.out.print("Year: ");
-            student.setYear(Integer.parseInt(scanner.nextLine()));
-
-            System.out.print("Section: ");
-            student.setSection(scanner.nextLine());
+            Utility.setStudentFields(scanner, student);
 
             System.out.print("\n[ Info ] Student details updated successfully.\n\n");
             return;
