@@ -1,63 +1,86 @@
-import java.util.Scanner;
+import java.util.*;
 
 public class Utility {
     private static final Scanner scanner = new Scanner(System.in);
+    private static final String errorMsg = "[ Error ] Input is not valid. Try again.";
 
-    public static int getIntInput(String inputPrompt, String errorMessage, int min, int max) {
-        if (min > max) {
-            throw new IllegalArgumentException("min cannot be greater than max");
-        }
+    public static int getIntInput(String prompt) {
+        return getIntInput(prompt, Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }
 
-        try {
-            System.out.printf("%s", inputPrompt);
-            final int input = Integer.parseInt(scanner.nextLine().trim());
+    public static int getIntInput(String prompt, int min, int max) {
+        while (true) {
+            try {
+                System.out.print(prompt);
+                final int input = Integer.parseInt(scanner.nextLine().trim());
 
-            if (input >= min && input <= max) {
-                return input;
-            } else {
-                System.out.printf("%s%n", errorMessage);
+                if (input >= min && input <= max)
+                    return input;
+
+                System.out.printf("\n%s\n", errorMsg);
+                System.out.printf("\n[ Info ] Valid range is %d-%d.\n\n", min, max);
+            } catch (NoSuchElementException e) {
+                System.out.println("\n\n[ Info ] Input interrupted. Exiting...");
+                System.exit(1);
+            } catch (Exception e) {
+                System.out.printf("\n%s\n\n", errorMsg);
             }
-        } catch (NumberFormatException e) {
-            System.out.printf("%s%n", errorMessage);
-        }
-
-        return getIntInput(inputPrompt, errorMessage, min, max);
-    }
-
-    public static int getIntInput(String inputPrompt, int min, int max) {
-        final String errorMessage = String.format("INPUT ERROR. Only accepts integers %d to %d.", min, max);
-        return getIntInput(inputPrompt, errorMessage, min, max);
-    }
-
-    public static boolean getBooleanInput(String inputPrompt, String errorMessage, String trueString, String falseString) {
-        System.out.printf("%s", inputPrompt);
-        final String input = scanner.nextLine().trim();
-
-        if (input.equalsIgnoreCase(trueString)) {
-            return true;
-        } else if (input.equalsIgnoreCase(falseString)) {
-            return false;
-        } else {
-            System.out.printf("%s%n", errorMessage);
-            return getBooleanInput(inputPrompt, errorMessage, trueString, falseString);
         }
     }
 
-    public static boolean getBooleanInput(String inputPrompt, String errorMessage) {
-        final String trueString = "y";
-        final  String falseString = "n";
-        return getBooleanInput(inputPrompt, errorMessage, trueString, falseString);
+    public static String getStringInput(String prompt) {
+        return getStringInput(prompt, Integer.MAX_VALUE, null, false);
     }
 
-    public static boolean getBooleanInput(String inputPrompt) {
-        final String errorMessage = "INPUT ERROR. Only accepts y or n.";
-        return getBooleanInput(inputPrompt, errorMessage);
+    public static String getStringInput(String prompt, int max) {
+        return getStringInput(prompt, max, null, false);
     }
 
-    public static String getStringInput(String inputPrompt) {
-        System.out.printf("%s", inputPrompt);
-        final String input = scanner.nextLine().trim();
+    public static String getStringInput(String prompt, String[] domain) {
+        return getStringInput(prompt, Integer.MAX_VALUE, domain, false);
+    }
 
-        return input;
+    public static String getStringInput(String prompt, boolean required) {
+        return getStringInput(prompt, Integer.MAX_VALUE, null, required);
+    }
+
+    public static String getStringInput(String prompt, int max, boolean required) {
+        return getStringInput(prompt, max, null, required);
+    }
+
+    public static String getStringInput(String prompt, int max, String[] domain, boolean required) {
+        while (true) {
+            try {
+                System.out.print(prompt);
+                final String input = scanner.nextLine().trim();
+
+                if (required && input.isEmpty()) {
+                    System.out.printf("\n%s\n", errorMsg);
+                    System.out.println("\n[ Info ] Input is required.\n");
+                    continue;
+                }
+
+                if (input.length() > max) {
+                    System.out.printf("\n%s\n", errorMsg);
+                    System.out.printf("\n[ Info ] Maximum length of input is %d.\n\n", max);
+                    continue;
+                }
+
+                if (domain == null)
+                    return input;
+
+                for (final String value : domain)
+                    if (value.equalsIgnoreCase(input))
+                        return value;
+
+                System.out.printf("\n%s\n", errorMsg);
+                System.out.printf("\n[ Info ] Possible values are: %s.\n\n", String.join(", ", domain));
+            } catch (NoSuchElementException e) {
+                System.out.println("\n\n[ Info ] Input interrupted. Exiting...");
+                System.exit(1);
+            } catch (Exception e) {
+                System.out.printf("\n%s\n\n", errorMsg);
+            }
+        }
     }
 }

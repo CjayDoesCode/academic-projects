@@ -4,33 +4,30 @@ public class Student {
     private String middleName = "";
     private String lastName = "";
     private String sex = "";
-    private Boolean pwd = false;
-    private String institute = "";
+    private String pwd = "";
     private String program = "";
-    private int year = 0;
+    private String year = "";
     private String section = "";
 
-    public Student() {}
+    public Student() {
+    }
 
     public Student(
-        String id, 
-        String firstName, 
-        String middleName, 
-        String lastName, 
-        String sex, 
-        Boolean pwd, 
-        String institute, 
-        String program, 
-        int year, 
-        String section
-    ) {
+            String id,
+            String firstName,
+            String middleName,
+            String lastName,
+            String sex,
+            String pwd,
+            String program,
+            String year,
+            String section) {
         this.id = id;
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
         this.sex = sex;
         this.pwd = pwd;
-        this.institute = institute;
         this.program = program;
         this.year = year;
         this.section = section;
@@ -56,19 +53,15 @@ public class Student {
         this.sex = sex;
     }
 
-    public void setPWD(Boolean pwd) {
+    public void setPwd(String pwd) {
         this.pwd = pwd;
-    }
-
-    public void setInstitute(String institute) {
-        this.institute = institute;
     }
 
     public void setProgram(String program) {
         this.program = program;
     }
 
-    public void setYear(int year) {
+    public void setYear(String year) {
         this.year = year;
     }
 
@@ -96,19 +89,15 @@ public class Student {
         return sex;
     }
 
-    public Boolean getPWD() {
+    public String getPwd() {
         return pwd;
-    }
-
-    public String getInstitute() {
-        return institute;
     }
 
     public String getProgram() {
         return program;
     }
 
-    public int getYear() {
+    public String getYear() {
         return year;
     }
 
@@ -116,13 +105,12 @@ public class Student {
         return section;
     }
 
-    // Methods
     public String getFullName() {
         return getFullName(Integer.MAX_VALUE);
     }
 
     public String getFullName(int max) {
-        final String fullName = String.format("%s, %s %s", this.lastName, this.firstName, this.middleName);
-        return (((fullName.length() <= max)) ? fullName : String.format("%s...", fullName.substring(0, max - 3)));
+        final String fullName = String.format("%s, %s %s", lastName, firstName, middleName).trim();
+        return (fullName.length() <= max ? fullName : String.format("%s...", fullName.substring(0, max - 3)));
     }
 }
