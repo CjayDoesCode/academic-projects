@@ -1,139 +1,129 @@
-import java.util.*;
-
 public class Menu {
-    private static final Scanner scanner = new Scanner(System.in);
+    private final StudentManager studentManager;
 
-    public static void displayMenu() {
-        while (true) {
-            System.out.print("""
-                    ================================================================================
-                                                School Management System
-                    ================================================================================
-                    [ 1 ] Add a student
-                    [ 2 ] Remove a student by ID
-                    [ 3 ] Update a student by ID
-                    [ 4 ] Search a student by ID
-                    [ 5 ] List all students
-                    [ 6 ] Save and exit
-                    ================================================================================
-                    Enter your choice:\s""");
+    public Menu(StudentManager studentManager) {
+        this.studentManager = studentManager;
+    }
 
-            try {
-                switch (Integer.parseInt(scanner.nextLine())) {
-                    case 1:
-                        addStudent(scanner);
-                        break;
-                    case 2:
-                        removeStudent(scanner);
-                        break;
-                    case 3:
-                        updateStudent(scanner);
-                        break;
-                    case 4:
-                        searchStudent(scanner);
-                        break;
-                    case 5:
-                        listStudents();
-                        break;
-                    case 6:
-                        StudentManager.saveStudentList();
-                        return;
-                    default:
-                        System.out.print("\n[ Error ] Input is not a valid choice.\n\n");
-                        break;
-                }
-            } catch (Exception e) {
-                System.out.print("\n[ Error ] Input is not a valid number.\n\n");
-            }
+    public void display() {
+        System.out.print(
+            """
+            ================================================================================
+                                        School Management System
+            ================================================================================
+            [ 1 ] Add a student
+            [ 2 ] Remove a student by ID
+            [ 3 ] Update a student by ID
+            [ 4 ] Search a student by ID
+            [ 5 ] List all students
+            [ 6 ] Save and exit
+            ================================================================================
+            """
+        );
+        
+        final int input = Utility.getIntInput("Enter your choice: ",1, 6);
+        switch (input) {
+            case 1 -> addStudent();
+            case 2 -> removeStudent(Menu.getIdInput());
+            case 3 -> updateStudent(Menu.getIdInput());
+            case 4 -> searchStudent(Menu.getIdInput());
+            case 5 -> listStudents();
+            case 6 -> this.studentManager.saveStudentList();
+        }
+        
+        if (input != 6) this.display();
+    }
+
+    public static void printInfo(String info) {
+        System.out.printf("%n[ Info ] %s%n%n", info);
+    }
+
+    public static void printError(String error) {
+        System.out.printf("%n[ Error ] %s%n%n", error);
+    }
+
+    public static String getIdInput() {
+        return Utility.getStringInput("ID: ");
+    }
+
+    public void addStudent() {
+        Menu.printInfo("Enter student details");
+
+        final Student student = this.studentManager.createStudent();
+        this.studentManager.addStudent(student);
+
+        Menu.printInfo("Student added successfully.");
+    }
+
+    public void removeStudent(String id) {
+        final Student student = this.studentManager.getStudentById(id);
+
+        if (student == null) {
+            Menu.printError("Student could not be found.");
+        } else {
+            this.studentManager.removeStudent(student);
+            Menu.printInfo("Student removed successfully.");
         }
     }
 
-    public static void addStudent(Scanner scanner) {
-        Student student = new Student();
+    public void updateStudent(String id) {
+        final Student student = this.studentManager.getStudentById(id);
 
-        System.out.print("\n[ Info ] Enter student details.\n\n");
-        Utility.setStudentFields(scanner, student);
-        StudentManager.addStudent(student);
+        if (student == null) {
+            Menu.printInfo("Student could not be found.");
+        } else {
+            Menu.printInfo("Enter new student details.");
+            final Student updatedStudent = this.studentManager.createStudent();
 
-        System.out.print("\n[ Info ] Student added successfully.\n\n");
-    }
-
-    public static void removeStudent(Scanner scanner) {
-        System.out.print("\nEnter ID: ");
-        String id = scanner.nextLine();
-
-        for (Student student : StudentManager.getStudentList()) {
-            if (student.getId().equals(id)) {
-                StudentManager.removeStudent(student);
-                System.out.print("\n[ Info ] Student removed successfully.\n\n");
-                return;
-            }
+            this.studentManager.removeStudent(student);
+            this.studentManager.addStudent(updatedStudent);
+            Menu.printInfo("Student details update successfully.");
         }
-
-        System.out.print("\n[ Error ] Student could not be found.\n\n");
     }
 
-    public static void updateStudent(Scanner scanner) {
-        System.out.print("\nEnter ID: ");
-        String id = scanner.nextLine();
+    public void searchStudent (String id) {
+        final Student student = this.studentManager.getStudentById(id);
 
-        for (Student student : StudentManager.getStudentList()) {
-            if (!student.getId().equals(id))
-                continue;
+        if (student == null) {
+            Menu.printInfo("Student could not be found.");
+        } else {
+            System.out.printf(
+                "%n%-7s  %-20s  %-6s  %-5s  %-9s  %-8s  %-4s  %-7s%n",
+                "ID", "Name", "Sex", "PWD", "Institute", "Program", "Year", "Section"
+            );
 
-            System.out.print("\n[ Info ] Enter new student details.\n\n");
-            Utility.setStudentFields(scanner, student);
+            System.out.printf(
+                "%-7s  %-20s  %-6s  %-5s  %-9s  %-8s  %-4d  %-7s%n%n",
+                student.getId(), student.getFullName(20), student.getSex(), student.getPWD(),
+                student.getInstitute(), student.getProgram(), student.getYear(), student.getSection()
+            );
+        }
+    }
 
-            System.out.print("\n[ Info ] Student details updated successfully.\n\n");
+    public void listStudents() {
+        if (this.studentManager.getStudentList().isEmpty()) {
+            Menu.printInfo("Student list is empty.");
             return;
         }
 
-        System.out.print("\n[ Info ] Student could not be found.\n\n");
-    }
+        System.out.print(
+            """
+            ================================================================================
+                                                Student List
+            ================================================================================
+            ID       Name                  Sex     PWD    Institute  Program   Year  Section
+            ================================================================================
+            """
+        );
 
-    public static void searchStudent(Scanner scanner) {
-        System.out.print("\nEnter ID: ");
-        String id = scanner.nextLine();
-
-        for (Student student : StudentManager.getStudentList()) {
-            if (student.getId().equals(id)) {
-                System.out.printf("\n%-7s  %-20s  %-6s  %-5s  %-9s  %-8s  %-4d  %-7s\n",
-                        "ID", "Name", "Sex", "PWD", "Institute", "Program", "Year", "Section");
-
-                System.out.printf("%-7s  %-20s  %-6s  %-5s  %-9s  %-8s  %-4d  %-7s\n\n",
-                        student.getId(), student.getFullName(20), student.getSex(), student.getPwd(),
-                        student.getInstitute(), student.getProgram(), student.getYear(), student.getSection());
-
-                return;
-            }
+        for (final Student student : this.studentManager.getStudentList()) {
+            System.out.printf(
+                "%-7s  %-20s  %-6s  %-5s  %-9s  %-8s  %-4d  %-7s%n",
+                student.getId(), student.getFullName(20), student.getSex(), student.getPWD(),
+                student.getInstitute(), student.getProgram(), student.getYear(), student.getSection()
+            );
         }
 
-        System.out.print("\n[ Info ] Student could not be found.\n\n");
-    }
-
-    public static void listStudents() {
-        List<Student> studentList = StudentManager.getStudentList();
-
-        if (studentList.isEmpty()) {
-            System.out.printf("\n[ Info ] Student list is empty.\n\n");
-            return;
-        }
-
-        System.out.print("""
-
-                ================================================================================
-                                                  Student List
-                ================================================================================
-                ID       Name                  Sex     PWD    Institute  Program   Year  Section
-                ================================================================================
-                """);
-
-        for (Student student : studentList) {
-            System.out.printf("%-7s  %-20s  %-6s  %-5s  %-9s  %-8s  %-4d  %-7s\n",
-                    student.getId(), student.getFullName(20), student.getSex(), student.getPwd(),
-                    student.getInstitute(), student.getProgram(), student.getYear(), student.getSection());
-        }
-
-        System.out.print("=".repeat(80) + "\n\n");
+        System.out.printf("%s%n%n", "=".repeat(80));
     }
 }

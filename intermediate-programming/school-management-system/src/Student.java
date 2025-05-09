@@ -10,11 +10,20 @@ public class Student {
     private int year = 0;
     private String section = "";
 
-    public Student() {
-    }
+    public Student() {}
 
-    public Student(String id, String firstName, String middleName, String lastName,
-            String sex, Boolean pwd, String institute, String program, int year, String section) {
+    public Student(
+        String id, 
+        String firstName, 
+        String middleName, 
+        String lastName, 
+        String sex, 
+        Boolean pwd, 
+        String institute, 
+        String program, 
+        int year, 
+        String section
+    ) {
         this.id = id;
         this.firstName = firstName;
         this.middleName = middleName;
@@ -27,48 +36,6 @@ public class Student {
         this.section = section;
     }
 
-    // Getters
-    public String getId() {
-        return id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getMiddleName() {
-        return middleName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getSex() {
-        return sex;
-    }
-
-    public Boolean getPwd() {
-        return pwd;
-    }
-
-    public String getInstitute() {
-        return institute;
-    }
-
-    public String getProgram() {
-        return program;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public String getSection() {
-        return section;
-    }
-
-    // Setters
     public void setId(String id) {
         this.id = id;
     }
@@ -89,7 +56,7 @@ public class Student {
         this.sex = sex;
     }
 
-    public void setPwd(Boolean pwd) {
+    public void setPWD(Boolean pwd) {
         this.pwd = pwd;
     }
 
@@ -109,16 +76,53 @@ public class Student {
         this.section = section;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public Boolean getPWD() {
+        return pwd;
+    }
+
+    public String getInstitute() {
+        return institute;
+    }
+
+    public String getProgram() {
+        return program;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public String getSection() {
+        return section;
+    }
+
     // Methods
     public String getFullName() {
         return getFullName(Integer.MAX_VALUE);
     }
 
     public String getFullName(int max) {
-        String fullName = (!lastName.isEmpty() ? lastName : "")
-                + (!firstName.isEmpty() ? ", " + firstName : "")
-                + (!middleName.isEmpty() ? " " + middleName : "");
-
-        return (((fullName.length() <= max)) ? fullName : fullName.substring(0, max - 3) + "...");
+        final String fullName = String.format("%s, %s %s", this.lastName, this.firstName, this.middleName);
+        return (((fullName.length() <= max)) ? fullName : String.format("%s...", fullName.substring(0, max - 3)));
     }
 }

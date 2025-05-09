@@ -1,35 +1,63 @@
-import java.util.*;
+import java.util.Scanner;
 
 public class Utility {
-    public static void setStudentFields(Scanner scanner, Student student) {
-        System.out.print("ID: ");
-        student.setId(scanner.nextLine());
+    private static final Scanner scanner = new Scanner(System.in);
 
-        System.out.print("First Name: ");
-        student.setFirstName(scanner.nextLine());
+    public static int getIntInput(String inputPrompt, String errorMessage, int min, int max) {
+        if (min > max) {
+            throw new IllegalArgumentException("min cannot be greater than max");
+        }
 
-        System.out.print("Middle Name: ");
-        student.setMiddleName(scanner.nextLine());
+        try {
+            System.out.printf("%s", inputPrompt);
+            final int input = Integer.parseInt(scanner.nextLine().trim());
 
-        System.out.print("Last Name: ");
-        student.setLastName(scanner.nextLine());
+            if (input >= min && input <= max) {
+                return input;
+            } else {
+                System.out.printf("%s%n", errorMessage);
+            }
+        } catch (NumberFormatException e) {
+            System.out.printf("%s%n", errorMessage);
+        }
 
-        System.out.print("Sex (Male/Female): ");
-        student.setSex(scanner.nextLine());
+        return getIntInput(inputPrompt, errorMessage, min, max);
+    }
 
-        System.out.print("PWD (True/False): ");
-        student.setPwd(Boolean.parseBoolean(scanner.nextLine()));
+    public static int getIntInput(String inputPrompt, int min, int max) {
+        final String errorMessage = String.format("INPUT ERROR. Only accepts integers %d to %d.", min, max);
+        return getIntInput(inputPrompt, errorMessage, min, max);
+    }
 
-        System.out.print("Institute: ");
-        student.setInstitute(scanner.nextLine());
+    public static boolean getBooleanInput(String inputPrompt, String errorMessage, String trueString, String falseString) {
+        System.out.printf("%s", inputPrompt);
+        final String input = scanner.nextLine().trim();
 
-        System.out.print("Program: ");
-        student.setProgram(scanner.nextLine());
+        if (input.equalsIgnoreCase(trueString)) {
+            return true;
+        } else if (input.equalsIgnoreCase(falseString)) {
+            return false;
+        } else {
+            System.out.printf("%s%n", errorMessage);
+            return getBooleanInput(inputPrompt, errorMessage, trueString, falseString);
+        }
+    }
 
-        System.out.print("Year: ");
-        student.setYear(Integer.parseInt(scanner.nextLine()));
+    public static boolean getBooleanInput(String inputPrompt, String errorMessage) {
+        final String trueString = "y";
+        final  String falseString = "n";
+        return getBooleanInput(inputPrompt, errorMessage, trueString, falseString);
+    }
 
-        System.out.print("Section: ");
-        student.setSection(scanner.nextLine());
+    public static boolean getBooleanInput(String inputPrompt) {
+        final String errorMessage = "INPUT ERROR. Only accepts y or n.";
+        return getBooleanInput(inputPrompt, errorMessage);
+    }
+
+    public static String getStringInput(String inputPrompt) {
+        System.out.printf("%s", inputPrompt);
+        final String input = scanner.nextLine().trim();
+
+        return input;
     }
 }
