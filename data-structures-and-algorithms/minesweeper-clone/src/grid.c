@@ -83,7 +83,7 @@ void displayGrid(const Grid *grid, bool isRevealed) {
     printf("│ %2d ", i + 1);
     for (int j = 0; j < width; j++) {
       const Cell *cell = &grid->cells[i][j];
-      if (isRevealed || cell->isRevealed) {
+      if (isRevealed|| cell->isRevealed) {
         if (cell->hasMine) {
           printf("│ %s*%s ", RED, RESET);
         } else {
@@ -155,49 +155,6 @@ void placeMines(Grid *grid, int initialX, int initialY) {
   }
 }
 
-/*
-void revealCell(Grid *grid, int x, int y) {
-  if (grid->firstMove) {
-    placeMines(grid, x, y);
-    grid->firstMove = false;
-  }
-
-  if (x < 0 || x >= grid->width || y < 0 || y >= grid->height)
-    return;
-
-  Cell *cell = &grid->cells[y][x];
-
-  if (cell->isRevealed || cell->isFlagged)
-    return;
-
-  cell->isRevealed = true;
-  grid->remainingCells--;
-
-  if (cell->hasMine) {
-    printf("\n%s[ Lose ] You have revealed a mine.%s\n", RED, RESET);
-    displayGrid(grid, true);
-    exit(0);
-  }
-
-  if (grid->remainingCells == 0) {
-    printf("\n%s[ Win ] All safe cells have been revealed.%s\n", GREEN, RESET);
-    displayGrid(grid, true);
-    exit(0);
-  }
-
-  if (cell->adjacentMines > 0)
-    return;
-
-  for (int dy = -1; dy <= 1; dy++) {
-    for (int dx = -1; dx <= 1; dx++) {
-      if (dx != 0 || dy != 0) {
-        revealCell(grid, x + dx, y + dy);
-      }
-    }
-  }
-}
-*/
-
 void revealCell(Grid *grid, int x, int y) {
   if (grid->firstMove) {
     placeMines(grid, x, y);
@@ -259,7 +216,6 @@ void revealCell(Grid *grid, int x, int y) {
   }
 
   freeQueue(q);
-  return;
 }
 
 void flagCell(Grid *grid, int x, int y) {
